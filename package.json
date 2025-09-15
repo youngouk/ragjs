@@ -1,0 +1,80 @@
+{
+  "name": "simple-rag-monorepo",
+  "version": "1.0.0",
+  "description": "Simple RAG Chatbot - Full-Stack JavaScript/TypeScript Monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/frontend",
+    "apps/backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "dev:frontend": "npm run dev --workspace=apps/frontend",
+    "dev:backend": "npm run dev --workspace=apps/backend",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:frontend": "npm run build --workspace=apps/frontend",
+    "build:backend": "npm run build --workspace=apps/backend",
+    "start": "npm run start:backend",
+    "start:frontend": "npm run start --workspace=apps/frontend",
+    "start:backend": "npm run start --workspace=apps/backend",
+    "test": "npm run test --workspace=apps/frontend",
+    "test:frontend": "npm run test --workspace=apps/frontend",
+    "test:backend": "npm run test --workspace=apps/backend",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "npm run lint --workspace=apps/frontend",
+    "lint:backend": "npm run lint --workspace=apps/backend",
+    "lint:fix": "npm run lint:fix:frontend && npm run lint:fix:backend",
+    "lint:fix:frontend": "npm run lint:fix --workspace=apps/frontend",
+    "lint:fix:backend": "npm run lint:fix --workspace=apps/backend",
+    "clean": "npm run clean:frontend && npm run clean:backend",
+    "clean:frontend": "cd apps/frontend && rm -rf node_modules dist coverage",
+    "clean:backend": "cd apps/backend && rm -rf node_modules dist logs/*.log",
+    "clean:all": "rm -rf node_modules && npm run clean",
+    "docker:build": "npm run docker:build:backend && npm run docker:build:frontend",
+    "docker:build:frontend": "npm run docker:build --workspace=apps/frontend",
+    "docker:build:backend": "npm run docker:build --workspace=apps/backend",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "setup": "npm install && npm run setup:env",
+    "setup:env": "cp apps/backend/.env.example apps/backend/.env && cp apps/frontend/.env.example apps/frontend/.env"
+  },
+  "keywords": [
+    "RAG",
+    "chatbot",
+    "AI",
+    "React",
+    "Node.js",
+    "TypeScript",
+    "monorepo",
+    "vector-search",
+    "LLM"
+  ],
+  "author": "Simple RAG Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "concurrently": "^8.2.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test"
+    }
+  },
+  "lint-staged": {
+    "apps/frontend/src/**/*.{ts,tsx}": [
+      "npm run lint:fix:frontend",
+      "npm run test:frontend"
+    ],
+    "apps/backend/src/**/*.ts": [
+      "npm run lint:fix:backend"
+    ]
+  }
+}
