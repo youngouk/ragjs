@@ -8,7 +8,7 @@ WORKDIR /app
 
 # 패키지 정보 복사 및 의존성 설치
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci --omit=dev && npm cache clean --force
 
 # 소스 코드 복사 및 빌드
 COPY . .

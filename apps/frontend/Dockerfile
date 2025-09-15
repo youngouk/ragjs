@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 프로덕션 의존성만 설치 (개발 의존성 제외)
-RUN npm ci --only=production --frozen-lockfile
+RUN npm ci --omit=dev
 
 # Stage 2: Build stage
 FROM node:22-alpine AS builder
@@ -17,7 +17,7 @@ WORKDIR /app
 
 # 전체 의존성 설치 (devDependencies 포함)
 COPY package*.json ./
-RUN npm ci --frozen-lockfile
+RUN npm ci
 
 # 소스 코드 복사
 COPY . .
