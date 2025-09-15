@@ -6,13 +6,16 @@ FROM node:20-alpine AS builder
 # 작업 디렉토리 설정
 WORKDIR /app
 
-# 패키지 정보 복사 및 의존성 설치
+# 패키지 정보 복사 및 전체 의존성 설치 (빌드용)
 COPY package*.json ./
-RUN npm ci --omit=dev && npm cache clean --force
+RUN npm ci && npm cache clean --force
 
 # 소스 코드 복사 및 빌드
 COPY . .
 RUN npm run build
+
+# 불필요한 devDependencies 제거
+RUN npm prune --omit=dev
 
 # 프로덕션 스테이지
 FROM node:20-alpine AS production
